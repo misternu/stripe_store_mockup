@@ -1,1 +1,1 @@
-# Shippo::API.token = ENV['SHIPPO_KEY']
+Shippo::API.token = ENV['SHIPPO_KEY']
