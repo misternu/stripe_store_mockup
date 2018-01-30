@@ -18,6 +18,7 @@
       <p>You are not signed in</p>
       <a href="/users/sign_in">Sign In</a>
     <% end %>
+    <p><%= link_to "Cart(#{current_cart.count})", cart_path %></p>
     <%= yield %>
   </body>
 </html>

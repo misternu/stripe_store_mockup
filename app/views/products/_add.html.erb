@@ -1,0 +1,10 @@
+<%= link_to("+",
+  items_path(
+    item: {
+      name: product.name,
+      sku: product.skus.data.first.id,
+      quantity: 1
+    }
+  ),
+  method: 'post'
+) %>

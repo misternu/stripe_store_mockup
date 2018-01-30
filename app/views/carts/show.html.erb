@@ -1,0 +1,4 @@
+<% current_cart.items.each do |item| %>
+  <p><%= item.name %> <%= item.quantity %></p>
+<% end %>
+<%= link_to "Back to Products", products_path %>

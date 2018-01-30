@@ -1,7 +1,11 @@
 class ProductsController < ApplicationController
   include CartHelper
   def index
-    @products = Stripe::Product.list
-    p @cart = current_cart
+    begin
+      @products = Stripe::Product.list
+    rescue Stripe::APIConnectionError
+      @products = []
+      flash[:alert] = "Stripe could not connect"
+    end
   end
 end
