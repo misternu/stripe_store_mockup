@@ -52,3 +52,5 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem 'stripe'
 gem 'shippo'
 gem 'devise'
+gem 'jquery-rails'
+gem 'materialize-sass'

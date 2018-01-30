@@ -9,16 +9,30 @@
   </head>
 
   <body>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <% if current_user %>
-      <p>Signed in as <%= current_user.email %></p>
-      <%= link_to("Sign Out", destroy_user_session_path, method: :delete) %>
-    <% else %>
-      <p>You are not signed in</p>
-      <a href="/users/sign_in">Sign In</a>
+    <nav>
+      <div class="nav-wrapper container">
+        <a href="/products" class="brand-logo">Foo Store</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><%= link_to "Cart(#{current_cart.count})", cart_path %></li>
+          <% if current_user %>
+            <li><%= current_user.email %></li>
+            <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+          <% else %>
+            <li><%= link_to "Sign In", new_user_session_path %></li>
+          <% end %>
+        </ul>
+      </div>
+    </nav>
+    <div class="container"><%= yield %></div>
+    <% if notice %>
+      <script type="text/javascript">
+        Materialize.toast('<%= notice %>', 2000)
+      </script>
     <% end %>
-    <p><%= link_to "Cart(#{current_cart.count})", cart_path %></p>
-    <%= yield %>
+    <% if alert %>
+      <script type="text/javascript">
+        Materialize.toast('<%= alert %>', 2000)
+      </script>
+    <% end %>
   </body>
 </html>
