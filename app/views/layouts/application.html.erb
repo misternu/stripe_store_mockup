@@ -3,6 +3,7 @@
   <head>
     <title>StripeStoreMockup</title>
     <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
@@ -12,7 +13,17 @@
     <nav>
       <div class="nav-wrapper container">
         <a href="/products" class="brand-logo">Foo Store</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><%= link_to "Cart(#{current_cart.count})", cart_path %></li>
+          <% if current_user %>
+            <li><%= current_user.email %></li>
+            <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+          <% else %>
+            <li><%= link_to "Sign In", new_user_session_path %></li>
+          <% end %>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
           <li><%= link_to "Cart(#{current_cart.count})", cart_path %></li>
           <% if current_user %>
             <li><%= current_user.email %></li>

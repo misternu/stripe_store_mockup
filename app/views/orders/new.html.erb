@@ -1,12 +1,66 @@
-<h4>Checkout Page</h4>
-<% current_cart.items.each do |item| %>
-  <p><%= item.name %> <%= item.quantity %></p>
-<% end %>
-<%= form_tag orders_path, method: 'post' do %>
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
-    data-email="<%= current_user.email if user_signed_in? %>"
-    data-locale="auto">
-  </script>
-<% end %>
+<h4 class="header">Checkout Page</h4>
+<div class="row">
+  <div class="col m6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Payment Sources:</span>
+        <% if @sources.length == 0 %>
+          <p>You have no payment sources attached.</p>
+        <% else %>
+          <% @sources.each do |source| %>
+
+          <% end %>
+        <% end %>
+        <%= form_tag '/foobar', method: 'post' do %>
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-label="Add Credit/Debit Card"
+            data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+            data-email="<%= current_user.email if user_signed_in? %>"
+            data-locale="auto">
+          </script>
+        <% end %>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">Shipping Addresses:</span>
+        <% if @addresses.length == 0 %>
+          <p>You have no saved addresses</p>
+        <% else %>
+          <ul class="collection">
+            <% @addresses.each do |address| %>
+              <li class="collection-item">
+                <%= address.city %>, <%= address.state %> <%= address.postal_code %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+        <p>Create new address:</p>
+        <%= form_for([current_user, @address]) do |form| %>
+          <%= form.text_field :name, placeholder: 'Name'%>
+          <%= form.text_field :line1, placeholder: 'Line 1'%>
+          <%= form.text_field :line2, placeholder: 'Line 2'%>
+          <%= form.text_field :city, placeholder: 'City'%>
+          <%= form.text_field :state, placeholder: 'State'%>
+          <%= form.text_field :postal_code, placeholder: 'Postal Code'%>
+          <%= form.text_field :country, placeholder: 'Country'%>
+          <%= form.text_field :phone, placeholder: 'Phone Number'%>
+          <%= form.submit "Add Address" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col m6 card">
+    <div class="card-content">
+      <span class="card-title">Items:</span>
+      <ul class="collection">
+        <% current_cart.items.each do |item| %>
+          <li class="collection-item"><%= item.name %> <%= item.quantity %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+
+

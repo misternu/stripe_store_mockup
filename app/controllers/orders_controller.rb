@@ -1,26 +1,20 @@
+# Controller for creating and paying for orders
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+
   include CartHelper
 
   def new
     @sources = []
+    @addresses = current_user.addresses
+    @address = Address.new
   end
 
   def create
     begin
-      @order = Stripe::Order.create(
-        currency: 'usd',
-        items: current_cart.items.map { |item|
-          {
-            type: 'sku',
-            parent: item.sku,
-            quantity: item.quantity
-          }
-        }
-      )
-      p payment = @order.pay(
-        source: stripe_params[:stripeToken],
-        email: stripe_params[:stripeEmail]
-      )
+      stripe = StripeService.new
+      order = stripe.create_order(current_cart.items)
+      stripe.pay_for_order(order, stripe_params)
     rescue Stripe::CardError => e
       flash[:error] = e.message
       return redirect_to '/checkout'

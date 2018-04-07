@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
+  resources :users do
+    resources :addresses
+  end
 
   root to: redirect('/products')
   get '/products', to: 'products#index'
